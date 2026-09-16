@@ -1,0 +1,1276 @@
+Build a production-style demo frontend for an Indian security identity verification system used by officers of Sashastra Seema Bal (SSB).
+
+IMPORTANT:
+- Do NOT use "TRUST-ID" anywhere in the project title, UI title, logo text, headings, browser title, or branding.
+- This is an Indian security/identity verification portal for Sashastra Seema Bal (SSB).
+- For this phase, build ONLY the SSB Officer Portal.
+- Do NOT build the Admin Portal.
+- Do NOT build the Forensic/Investigator Portal.
+- Do NOT create fake/mock verification results.
+- The frontend must be designed to connect to an existing Flask backend.
+- Inspect and adapt to the backend API structure if backend source/code is provided.
+- Keep API integration modular so endpoint URLs can easily be changed through environment variables.
+
+==================================================
+1. PROJECT PURPOSE
+==================================================
+
+The portal is an officer-facing identity verification system.
+
+An SSB officer receives a person/document set and needs to verify whether the person's identity is consistent across:
+
+1. Passport
+2. Aadhaar Card OR Driving Licence
+3. Fingerprint
+4. Face verification
+5. Liveness verification
+6. Trusted Verification Database
+7. Integrity/hash verification
+
+The officer should be able to upload the required documents and fingerprint file, start verification, and receive a clear layered verification result.
+
+The interface should feel like an official Indian government/security/forensic application rather than a generic SaaS dashboard.
+
+The design should communicate:
+
+- Security
+- Identity verification
+- Government/security operations
+- Reliability
+- Evidence integrity
+- Officer workflow
+- Clear decision-support information
+
+Do NOT make the UI flashy, gaming-like, crypto-like, or startup-like.
+
+==================================================
+2. PORTAL NAME / BRANDING
+==================================================
+
+Use a neutral project title such as:
+
+"SSB Identity Verification Portal"
+
+or
+
+"SSB Officer Verification Portal"
+
+Primary branding:
+
+"Sashastra Seema Bal"
+
+Short form:
+
+"SSB"
+
+Use Indian government/security-inspired visual language.
+
+Do NOT claim that this is an official Government of India website unless explicitly provided.
+
+Do NOT use official government logos/emblems unless legally authorized assets are supplied.
+
+A simple professional SSB text-based identity/header is acceptable.
+
+==================================================
+3. TECHNOLOGY
+==================================================
+
+Preferred frontend stack:
+
+- React
+- TypeScript
+- Vite
+- Tailwind CSS
+- Modern component architecture
+- Lucide icons or another clean icon library
+- Responsive design
+
+Use reusable components.
+
+Suggested structure:
+
+src/
+├── components/
+│   ├── layout/
+│   ├── upload/
+│   ├── verification/
+│   ├── status/
+│   └── common/
+├── pages/
+│   ├── Login.tsx
+│   ├── OfficerDashboard.tsx
+│   └── VerificationResult.tsx
+├── services/
+│   └── api.ts
+├── types/
+│   └── verification.ts
+├── config/
+│   └── api.ts
+└── App.tsx
+
+Keep API communication separate from UI components.
+
+==================================================
+4. MAIN OFFICER WORKFLOW
+==================================================
+
+The officer workflow should be:
+
+LOGIN
+  ↓
+SSB OFFICER DASHBOARD
+  ↓
+START NEW IDENTITY VERIFICATION
+  ↓
+UPLOAD PASSPORT
+  ↓
+UPLOAD AADHAAR OR DRIVING LICENCE
+  ↓
+UPLOAD FINGERPRINT (.firpiv)
+  ↓
+START VERIFICATION
+  ↓
+DOCUMENT OCR + VALIDATION
+  ↓
+EXTRACT IDENTITY NUMBERS
+  ↓
+SEARCH VERIFICATION DATABASE
+  ↓
+RETRIEVE TRUSTED IDENTITY RECORD
+  ↓
+FINGERPRINT BIOMETRIC MATCH
+  ↓
+FACE VERIFICATION
+  ↓
+LIVENESS VERIFICATION
+  ↓
+HASH / INTEGRITY VERIFICATION
+  ↓
+FINAL VERIFICATION RESULT
+  ↓
+DISPLAY DETAILED LAYERED RESULT
+
+The frontend should visually represent this workflow.
+
+==================================================
+5. LOGIN SCREEN
+
+Create a professional SSB officer login page.
+
+Layout:
+
+Left side:
+
+SSB Identity Verification Portal
+Security-focused description
+Minimal visual pattern related to identity/security
+
+Right side:
+
+Officer Login
+Officer ID
+Password
+Sign In button
+
+Optional:
+
+Remember this device
+Secure connection indicator
+
+Do not implement unnecessary authentication complexity if the backend authentication endpoint is not available.
+
+If authentication is not currently implemented in the backend, create the UI structure but clearly isolate the login API integration.
+
+Do NOT hardcode fake credentials.
+
+==================================================
+6. OFFICER DASHBOARD
+
+After login, show the main SSB Officer Dashboard.
+
+Header:
+
+"Sashastra Seema Bal"
+"Identity Verification Portal"
+
+Include:
+
+Officer profile
+Officer ID
+Logout
+Current verification status
+
+Main dashboard should contain:
+
+New Verification
+
+Large primary action:
+
+"Start Identity Verification"
+
+Secondary information:
+
+"Verify identity using government-issued documents and biometric authentication."
+
+Also show recent verification activity if the backend provides it.
+
+Do NOT fabricate recent verification data.
+
+==================================================
+7. IDENTITY VERIFICATION SCREEN
+
+This is the most important screen.
+
+Create a clean step-based verification interface.
+
+Top:
+
+"New Identity Verification"
+
+Status:
+
+"Ready to begin"
+
+Display the verification stages:
+
+Documents
+Identity Database
+Fingerprint
+Face
+Liveness
+Integrity
+Final Result
+
+Use a horizontal stepper on desktop and vertical stepper on smaller screens.
+
+==================================================
+8. DOCUMENT UPLOAD SECTION
+
+Create a document upload area.
+
+Passport
+
+Card:
+
+"Passport"
+
+Required.
+
+Upload:
+
+JPG
+JPEG
+PNG
+PDF if backend supports it
+
+Show:
+
+File name
+File size
+Upload status
+Remove button
+Validation status
+Secondary Identity Document
+
+Provide two choices:
+
+Aadhaar Card
+OR
+Driving Licence
+
+UI:
+
+"Select Identity Document"
+
+[ Aadhaar ] [ Driving Licence ]
+
+Then show the corresponding upload area.
+
+Important:
+
+The officer should NOT manually enter passport number/Aadhaar number/DL number unless the backend specifically requires a fallback.
+
+The backend's Module 1 OCR should extract:
+
+Passport Number
+
+AND
+
+Aadhaar Number OR Driving Licence Number
+
+The frontend must use the actual backend response.
+
+Do NOT duplicate OCR processing in frontend.
+
+==================================================
+9. FINGERPRINT UPLOAD
+
+Create a dedicated biometric upload card.
+
+Title:
+
+"Fingerprint Verification"
+
+Description:
+
+"Upload the fingerprint file captured from the individual."
+
+Accepted format:
+
+.firpiv
+
+The UI should clearly show:
+
+Fingerprint File
+[ Drag & Drop ]
+or
+[ Browse File ]
+
+After selecting:
+
+fingerprint_filename.firpiv
+File size
+Upload ready
+
+Do not display the raw fingerprint template.
+
+Do not display biometric template contents.
+
+Do not expose sensitive biometric data.
+
+==================================================
+10. VERIFICATION BUTTON
+
+After the required files are selected:
+
+Large primary button:
+
+"Verify Identity"
+
+Before verification, show a small confirmation summary:
+
+Passport:
+✓ Uploaded
+
+Aadhaar:
+✓ Uploaded
+
+OR
+
+Driving Licence:
+✓ Uploaded
+
+Fingerprint:
+✓ Uploaded
+
+Then:
+
+[ VERIFY IDENTITY ]
+
+During verification:
+
+Button becomes:
+
+"Verification in Progress..."
+
+Show a progress/status interface.
+
+Do not show fake percentage progress if the backend does not provide actual progress.
+
+Instead display backend-driven stages such as:
+
+Processing documents...
+Validating identity...
+Searching verification database...
+Comparing fingerprint...
+Verifying face...
+Checking liveness...
+Validating integrity...
+Generating final result...
+
+Only mark a stage complete when the corresponding backend result is available.
+
+==================================================
+11. BACKEND API INTEGRATION
+
+Create a central API service.
+
+Example:
+
+services/api.ts
+
+Use:
+
+const API_BASE_URL =
+import.meta.env.VITE_API_BASE_URL || "http://127.0.0.1:5000";
+
+Do NOT hardcode API URLs throughout components.
+
+==================================================
+12. REQUIRED BACKEND ENDPOINTS
+
+The frontend should be designed around the following backend API contract.
+
+IMPORTANT:
+If the actual Flask backend already has different endpoint names, inspect the backend and use the existing routes instead of creating duplicates.
+
+A. HEALTH CHECK
+
+GET
+
+/api/health
+
+Purpose:
+
+Check whether the backend is reachable.
+
+Expected example:
+
+{
+"status": "ok"
+}
+
+Use this for connection/system status only.
+
+B. IDENTITY VERIFICATION
+
+POST
+
+/api/verify
+
+Content-Type:
+
+multipart/form-data
+
+This is the main endpoint.
+
+Send:
+
+passport document
+Aadhaar OR driving licence
+fingerprint_file
+
+Example form-data concept:
+
+passport = passport.jpg
+
+identity_document = aadhaar.jpg
+
+fingerprint_file = fingerprint.firpiv
+
+If the existing backend uses different field names, use those exact field names.
+
+IMPORTANT:
+
+The frontend should NOT send manually typed Passport/Aadhaar/DL numbers when those values are produced by Module 1.
+
+The backend should:
+
+Receive documents
+Run Module 1 OCR/document validation
+Extract Passport Number
+Extract Aadhaar Number OR DL Number
+Search Firebase Verification DB
+Retrieve trusted identity record
+Retrieve enrolled fingerprint reference
+Retrieve fingerprint file from IPFS if required
+Extract enrolled fingerprint template
+Extract new fingerprint template
+Perform biometric fingerprint matching
+Perform face verification
+Perform liveness verification
+Recalculate integrity/hash
+Compare calculated hash with stored hash
+Return final verification result
+EXPECTED VERIFY RESPONSE
+
+The frontend should support a response structure similar to:
+
+{
+"success": true,
+
+"verification": {
+"identity_found": true,
+"document_verification": true,
+"fingerprint_match": true,
+"face_match": true,
+"liveness_passed": true,
+"hash_match": true,
+"final_status": "VERIFIED"
+},
+
+"identity": {
+"national_id": "A7K29P4X",
+"name": "Example Person",
+"dob": "DD/MM/YYYY",
+"gender": "Male",
+"nationality": "Indian"
+},
+
+"documents": {
+"passport_number": "P1234567",
+"aadhaar_number": "XXXXXXXXXXXX"
+},
+
+"fingerprint": {
+"match": true,
+"score": 0.94
+},
+
+"face": {
+"match": true,
+"score": 0.91
+},
+
+"liveness": {
+"passed": true
+},
+
+"integrity": {
+"hash_match": true
+}
+}
+
+IMPORTANT:
+
+This is an example contract.
+
+Use the ACTUAL backend response structure if it already exists.
+
+Do NOT invent values.
+
+Do NOT generate random verification scores.
+
+If a score is not returned by backend, don't display a score.
+
+==================================================
+14. VERIFICATION RESULT PAGE
+
+After verification, navigate to:
+
+/verification/result
+
+or display the result within the same verification workflow.
+
+This should be the main demo screen.
+
+At the top:
+
+"Identity Verification Result"
+
+Show a large final status.
+
+Possible states:
+
+VERIFIED
+
+NOT VERIFIED
+
+VERIFICATION FAILED
+
+INCONCLUSIVE
+
+Only display a state actually returned by the backend.
+
+==================================================
+15. LAYERED VERIFICATION RESULT
+
+Show each verification layer separately.
+
+Create professional status cards.
+
+Layer 1 — Document Verification
+
+Display:
+
+Document Verification
+✓ Passed
+
+or
+
+✕ Failed
+
+Details:
+
+Passport
+Aadhaar / Driving Licence
+
+If backend returns extracted information, display relevant non-sensitive fields.
+
+Do not expose unnecessary document data.
+
+Mask sensitive numbers where appropriate.
+
+Example:
+
+Passport:
+P******67
+
+Aadhaar:
+XXXX XXXX 1234
+
+==================================================
+16. LAYER 2 — VERIFICATION DATABASE
+
+Card:
+
+"Trusted Identity Database"
+
+Show:
+
+Identity Record
+✓ Found
+
+or
+
+✕ Not Found
+
+If found:
+
+Name
+National ID
+Date of Birth
+Nationality
+
+Do not expose raw database internals.
+
+Do not expose fingerprint templates.
+
+==================================================
+17. LAYER 3 — FINGERPRINT
+
+Card:
+
+"Fingerprint Verification"
+
+Show:
+
+Fingerprint Match
+✓ MATCH
+
+or
+
+✕ MISMATCH
+
+If backend returns a score:
+
+Match Score:
+94%
+
+Otherwise don't create one.
+
+Description:
+
+"Captured fingerprint compared against the enrolled biometric record."
+
+Never display the raw fingerprint template.
+
+==================================================
+18. LAYER 4 — FACE VERIFICATION
+
+Card:
+
+"Face Verification"
+
+Show:
+
+Face Match
+✓ MATCH
+
+or
+
+✕ MISMATCH
+
+If backend returns confidence:
+
+display it.
+
+Otherwise don't invent it.
+
+==================================================
+19. LAYER 5 — LIVENESS
+
+Card:
+
+"Liveness Detection"
+
+Show:
+
+Liveness
+✓ PASSED
+
+or
+
+✕ FAILED
+
+Use backend result.
+
+==================================================
+20. LAYER 6 — INTEGRITY / HASH
+
+Card:
+
+"Record Integrity"
+
+Show:
+
+Hash Verification
+✓ VALID
+
+or
+
+✕ INVALID
+
+Description:
+
+"Verification confirms that the trusted identity record has not been altered."
+
+Do not display the actual fingerprint template.
+
+If the backend returns a hash identifier/value intended for display, it may be displayed carefully.
+
+Otherwise only display the status.
+
+==================================================
+21. FINAL STATUS
+
+At the bottom create a clear final result panel.
+
+For example:
+
+IDENTITY VERIFIED
+
+"All required verification layers passed."
+
+OR
+
+IDENTITY NOT VERIFIED
+
+"One or more verification layers failed."
+
+The final message must be generated from actual backend results.
+
+Do NOT make frontend logic that automatically marks someone verified simply because a button was clicked.
+
+==================================================
+22. FAILURE HANDLING
+
+Handle all backend failure states gracefully.
+
+Possible failures:
+
+No Passport uploaded
+No Aadhaar/DL uploaded
+No fingerprint uploaded
+Invalid file format
+OCR failed
+Document validation failed
+Passport number not extracted
+Aadhaar/DL number not extracted
+Identity not found in database
+Multiple identity records found
+Fingerprint extraction failed
+Fingerprint mismatch
+Face mismatch
+Liveness failed
+IPFS retrieval failed
+Hash mismatch
+Firebase error
+Backend unavailable
+Unexpected server error
+
+Show human-readable messages.
+
+Example:
+
+"Identity record was not found in the verification database."
+
+"Fingerprint verification failed. The captured fingerprint did not match the enrolled biometric record."
+
+"Record integrity verification failed."
+
+Do not expose stack traces to the officer.
+
+==================================================
+23. SECURITY UX
+
+The portal should visually communicate secure operation.
+
+Header indicators:
+
+● Secure Session
+
+Backend status:
+
+● System Online
+
+Use subtle security indicators.
+
+Do not claim military-grade or guaranteed security.
+
+Do not expose:
+
+API keys
+Firebase credentials
+Pinata credentials
+raw biometric templates
+internal server paths
+database credentials
+==================================================
+24. RESPONSIVE DESIGN
+
+The primary target is a desktop/laptop used by an SSB officer.
+
+Optimize for:
+
+1366x768
+1920x1080
+Laptop screens
+
+But also support tablets.
+
+The verification workflow should remain easy to operate with a mouse and keyboard.
+
+==================================================
+25. VISUAL DESIGN
+
+Design language:
+
+Indian government/security/forensic operations dashboard.
+
+Use:
+
+Deep navy / dark blue
+White
+Neutral gray
+Subtle green for successful verification
+Amber for warnings
+Red for failures
+
+Avoid excessive gradients.
+
+Avoid neon colors.
+
+Avoid crypto/blockchain visual styles.
+
+Avoid unnecessary animations.
+
+Use clean typography.
+
+Use strong spacing and clear hierarchy.
+
+Cards should have:
+
+subtle borders
+moderate radius
+clean shadows
+professional icons
+==================================================
+26. SIDEBAR
+
+Create a simple officer sidebar.
+
+Items:
+
+Dashboard
+
+New Verification
+
+Verification History
+
+System Status
+
+Profile
+
+Logout
+
+IMPORTANT:
+
+Only implement pages that have actual backend functionality.
+
+If Verification History backend is not available, show it as a placeholder/disabled feature or leave it out rather than generating fake data.
+
+==================================================
+27. DASHBOARD SUMMARY
+
+The dashboard can display backend-driven statistics if available:
+
+Today's Verifications
+
+Verified
+
+Not Verified
+
+System Status
+
+If these APIs do not exist, DO NOT create fake numbers.
+
+Instead prioritize:
+
+"Start New Verification"
+
+==================================================
+28. VERIFICATION HISTORY
+
+If backend supports verification history, create a table:
+
+Time
+Reference ID
+Identity
+Verification Status
+Officer
+Actions
+
+Use actual API data.
+
+If backend does not provide history, do not fabricate records.
+
+==================================================
+29. API ERROR UX
+
+If backend is unavailable:
+
+"Unable to connect to the verification server."
+
+Buttons:
+
+Retry
+
+Return to Dashboard
+
+If timeout:
+
+"Verification server did not respond. Please try again."
+
+If 500:
+
+"Verification service encountered an error."
+
+Do not show raw backend error traces.
+
+==================================================
+30. FRONTEND STATE MANAGEMENT
+
+Manage states such as:
+
+idle
+uploading
+ready
+verifying
+success
+failed
+
+Verification stage states:
+
+pending
+processing
+passed
+failed
+skipped
+
+Do not assume a stage passed unless backend confirms it.
+
+==================================================
+31. FILE VALIDATION
+
+Frontend can perform basic validation:
+
+Passport:
+
+file exists
+allowed extension
+reasonable size
+
+Aadhaar:
+
+file exists
+allowed extension
+
+Driving Licence:
+
+file exists
+allowed extension
+
+Fingerprint:
+
+MUST be .firpiv
+
+But remember:
+
+Frontend validation is only UX validation.
+
+Actual security/document validation MUST remain on backend.
+
+==================================================
+32. IMPORTANT ARCHITECTURE RULE
+
+DO NOT duplicate backend functionality in frontend.
+
+Frontend responsibilities:
+
+Upload files
+Display workflow
+Send requests
+Display backend results
+Display errors
+Provide professional officer UX
+
+Backend responsibilities:
+
+OCR
+document validation
+identity extraction
+Firebase search
+IPFS retrieval
+fingerprint template extraction
+biometric matching
+face verification
+liveness
+hash verification
+final verification decision
+==================================================
+33. EXISTING BACKEND INTEGRATION
+
+Before implementing API calls:
+
+INSPECT THE EXISTING BACKEND.
+
+Find:
+
+Flask app entry point
+route files
+endpoint names
+HTTP methods
+expected form-data field names
+JSON fields
+response formats
+CORS configuration
+Module 1 integration
+Module 2 enrollment
+Module 2 verification
+Module 3 face/liveness integration
+
+DO NOT create duplicate endpoints if equivalent endpoints already exist.
+
+Use the existing backend implementation.
+
+If the backend endpoint differs from the proposed API contract above:
+
+ADAPT THE FRONTEND TO THE REAL BACKEND.
+
+Do not modify backend code unless explicitly requested.
+
+==================================================
+34. API SERVICE DESIGN
+
+Create a centralized API client.
+
+Example conceptual API:
+
+api.ts
+
+Functions:
+
+checkHealth()
+
+verifyIdentity(formData)
+
+loginOfficer(credentials)
+
+logoutOfficer()
+
+getVerificationHistory()
+
+Only implement functions corresponding to actual backend endpoints.
+
+Use fetch or Axios.
+
+Handle:
+
+HTTP errors
+network errors
+timeout
+JSON parsing errors
+==================================================
+35. ENVIRONMENT CONFIGURATION
+
+Create:
+
+.env
+
+Example:
+
+VITE_API_BASE_URL=http://127.0.0.1:5000
+
+Do NOT put:
+
+Firebase credentials
+Pinata API keys
+Secret keys
+Service account files
+
+in the frontend.
+
+These belong only on the backend.
+
+==================================================
+36. DEMO EXPERIENCE
+
+The complete demo should feel like:
+
+SSB Officer logs in
+↓
+Dashboard
+↓
+Start Identity Verification
+↓
+Upload Passport
+↓
+Upload Aadhaar / Driving Licence
+↓
+Upload fingerprint .firpiv
+↓
+Verify Identity
+↓
+Backend processes everything
+↓
+Officer sees verification stages
+↓
+Final layered verification result
+
+The result page should be visually impressive but professional.
+
+The officer should immediately understand:
+
+WHO is being verified
+
+WHICH documents were verified
+
+WHETHER the identity exists in the trusted database
+
+WHETHER the fingerprint matches
+
+WHETHER the face matches
+
+WHETHER liveness passed
+
+WHETHER record integrity passed
+
+WHAT the final verification status is
+
+==================================================
+37. DO NOT IMPLEMENT THESE YET
+
+Do NOT build:
+
+Admin Portal
+Forensic/Investigator Portal
+Blockchain network
+Smart contracts
+cryptocurrency
+public blockchain explorer
+unnecessary AI chatbot
+unnecessary analytics
+fake verification records
+fake biometric scores
+fake identity records
+fake government data
+
+Blockchain/audit functionality may be added later.
+
+For now the system uses:
+
+Firebase Firestore
++
+Pinata/IPFS
++
+SHA-256 integrity/hash simulation
+
+according to the existing backend implementation.
+
+==================================================
+38. FINAL DEVELOPMENT REQUIREMENT
+
+Build the SSB Officer Portal as a polished, realistic security verification interface.
+
+Priority order:
+
+Excellent SSB officer UX
+Correct backend integration
+Correct file upload handling
+Clear verification workflow
+Clear layered results
+Secure handling of sensitive information
+Professional visual design
+Responsive layout
+
+Do not sacrifice backend correctness for visual effects.
+
+Do not create fake functionality merely to make the UI look complete.
+
+At the end, provide:
+
+Project structure
+API integration files
+Environment variables required
+How to run the frontend
+Backend URL configuration
+List of backend endpoints being used
+Any backend fields/responses that are missing and need to be confirmed
+
+The final application should be ready to connect to the existing Flask backend and demonstrate the complete SSB Officer identity verification workflow.
+
+
+### Backend endpoint flow to give the AI
+
+The important part is this relationship:
+
+```text
+SSB OFFICER FRONTEND
+        │
+        │ POST /api/verify
+        │ multipart/form-data
+        ▼
+┌─────────────────────────┐
+│     FLASK BACKEND       │
+└────────────┬────────────┘
+             │
+             ▼
+       MODULE 1
+ OCR + Document Validation
+             │
+             ├── Passport No
+             └── Aadhaar / DL No
+                       │
+                       ▼
+              Firebase Verification DB
+                       │
+                       ├── Identity Record
+                       ├── Enrolled Fingerprint
+                       ├── IPFS Reference
+                       └── Stored Hash
+                       │
+                       ▼
+              Fingerprint Matching
+                 Template A ↔ B
+                       │
+                       ▼
+                Face Verification
+                       │
+                       ▼
+                Liveness Detection
+                       │
+                       ▼
+                 Hash Verification
+                       │
+                       ▼
+                FINAL RESULT
+                       │
+                       ▼
+              JSON → FRONTEND
+
+For the demo, the officer should see this as a clean sequence:
+
+Documents → Database → Fingerprint → Face → Liveness → Integrity → Final Decision
+
+That gives you a strong SSB Officer workflow without mixing in the Admin or Forensic portals yet.

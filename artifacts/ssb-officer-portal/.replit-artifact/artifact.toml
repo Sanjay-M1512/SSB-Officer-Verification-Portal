@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "SSB Officer Verification Portal"
+description = "A professional officer-facing identity verification portal for Sashastra Seema Bal, designed to upload documents and fingerprint evidence, call a Flask verification backend, and present layered backend-driven results without fabricated data."
+version = "1.0.0"
+id = "artifacts/ssb-officer-portal"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 19308
+
+[services.development]
+run = "pnpm --filter @workspace/ssb-officer-portal run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/ssb-officer-portal", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/ssb-officer-portal/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "19308"
+BASE_PATH = "/"
